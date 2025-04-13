@@ -35,7 +35,7 @@ namespace KursachLibrary
     public static class DatabaseHelper
     {
         // Путь к файлу базы данных SQLite
-        private const string DatabasePath = "C:\\Users\\nngfy\\Documents\\учёба\\Мобилка\\kursach\\database.db";
+        private const string DatabasePath = "C:\\Users\\nngfy\\Documents\\учёба\\Мобилка\\kursach4\\database.db";
 
         /// Инициализирует базу данных и создает необходимые таблицы, если они не существуют
         public static void InitializeDatabase()
@@ -94,6 +94,21 @@ namespace KursachLibrary
                 (2, 'What is the capital of Great Britan?', NULL, 'Berlin', 'Madrid', 'Paris', 'London', NULL, NULL, NULL, NULL, 3),
                 (3, NULL, 'C:\Users\nngfy\Documents\учёба\Мобилка\kursach\\ezhik.jpg', 'Ёжик', 'Пицца', 'Треугольник', 'koshka', NULL, NULL, NULL, NULL, 0),
                 (4, 'Who is the China?', NULL, NULL, NULL, NULL, NULL, 'C:\Users\nngfy\Documents\учёба\Мобилка\kursach\\ezhik.jpg', 'C:\Users\nngfy\Documents\учёба\Мобилка\kursach\\russia.jpg', 'C:\Users\nngfy\Documents\учёба\Мобилка\kursach\\china.jpg', 'C:\Users\nngfy\Documents\учёба\Мобилка\kursach\\sever-korea.jpg', 2);";
+                command.ExecuteNonQuery();
+            }
+
+            // Проверка наличия викторин
+            command.CommandText = "SELECT COUNT(*) FROM Quizzes;";
+            int quizCount = Convert.ToInt32(command.ExecuteScalar());
+
+            if (quizCount == 0)
+            {
+                command.CommandText = @"
+                INSERT INTO Quizzes (Title, IsCompleted) VALUES 
+                ('Математика - основы', 0),
+                ('География мира', 0),
+                ('Картинка-викторина', 0),
+                ('Политика Азии', 0);";
                 command.ExecuteNonQuery();
             }
         }
@@ -252,5 +267,58 @@ namespace KursachLibrary
 
             return quizzes;
         }
+
+        /// <summary>
+        /// Добавляет новую викторину
+        /// </summary>
+        /// <param name="title"></param>
+        public static int AddQuiz(string title)
+        {
+            using var connection = new SQLiteConnection($"Data Source={DatabasePath}");
+            connection.Open();
+
+            var insertQuery = "INSERT INTO Quizzes (Title, IsCompleted) VALUES (@Title, 0);";
+            using var command = new SQLiteCommand(insertQuery, connection);
+            command.Parameters.AddWithValue("@Title", title);
+            command.ExecuteNonQuery();
+
+            command.CommandText = "SELECT last_insert_rowid();";
+            return Convert.ToInt32(command.ExecuteScalar());
+        }
+
+        public static void AddQuestion(Question question, int quizId)
+        {
+            using var connection = new SQLiteConnection($"Data Source={DatabasePath}");
+            connection.Open();
+
+            var insertQuery = @"
+                INSERT INTO Questions (
+                    QuizId, QuestionText, ImagePath,
+                    Answer1, Answer2, Answer3, Answer4,
+                    AnswerImage1, AnswerImage2, AnswerImage3, AnswerImage4,
+                    CorrectAnswer
+                ) VALUES (
+                    @QuizId, @QuestionText, @ImagePath,
+                    @Answer1, @Answer2, @Answer3, @Answer4,
+                    @AnswerImage1, @AnswerImage2, @AnswerImage3, @AnswerImage4,
+                    @CorrectAnswer
+                );";
+
+            using var command = new SQLiteCommand(insertQuery, connection);
+            command.Parameters.AddWithValue("@QuizId", quizId);
+            command.Parameters.AddWithValue("@QuestionText", question.QuestionText);
+            command.Parameters.AddWithValue("@ImagePath", question.ImagePath ?? (object)DBNull.Value);
+
+            for (int i = 0; i < 4; i++)
+            {
+                command.Parameters.AddWithValue($"@Answer{i + 1}", question.Answers[i] ?? (object)DBNull.Value);
+                command.Parameters.AddWithValue($"@AnswerImage{i + 1}", question.AnswerImagePaths[i] ?? (object)DBNull.Value);
+            }
+
+            command.Parameters.AddWithValue("@CorrectAnswer", question.CorrectAnswer);
+            command.ExecuteNonQuery();
+        }
+
+
     }
 }

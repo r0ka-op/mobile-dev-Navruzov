@@ -27,3 +27,17 @@ C:\Users\nngfy\Documents\учёба\Мобилка\kursach\kursach-library\obj\D
 C:\Users\nngfy\Documents\учёба\Мобилка\kursach\kursach-library\obj\Debug\net9.0\kursach-library.pdb
 C:\Users\nngfy\Documents\учёба\Мобилка\kursach\kursach-library\obj\Debug\net9.0\kursach-library.genruntimeconfig.cache
 C:\Users\nngfy\Documents\учёба\Мобилка\kursach\kursach-library\obj\Debug\net9.0\ref\kursach-library.dll
+C:\Users\nngfy\Documents\учёба\Мобилка\kursach4\kursach-library\bin\Debug\net9.0\kursach-library.deps.json
+C:\Users\nngfy\Documents\учёба\Мобилка\kursach4\kursach-library\bin\Debug\net9.0\kursach-library.runtimeconfig.json
+C:\Users\nngfy\Documents\учёба\Мобилка\kursach4\kursach-library\bin\Debug\net9.0\kursach-library.dll
+C:\Users\nngfy\Documents\учёба\Мобилка\kursach4\kursach-library\bin\Debug\net9.0\kursach-library.pdb
+C:\Users\nngfy\Documents\учёба\Мобилка\kursach4\kursach-library\obj\Debug\net9.0\kursach-library.csproj.AssemblyReference.cache
+C:\Users\nngfy\Documents\учёба\Мобилка\kursach4\kursach-library\obj\Debug\net9.0\kursach-library.GeneratedMSBuildEditorConfig.editorconfig
+C:\Users\nngfy\Documents\учёба\Мобилка\kursach4\kursach-library\obj\Debug\net9.0\kursach-library.AssemblyInfoInputs.cache
+C:\Users\nngfy\Documents\учёба\Мобилка\kursach4\kursach-library\obj\Debug\net9.0\kursach-library.AssemblyInfo.cs
+C:\Users\nngfy\Documents\учёба\Мобилка\kursach4\kursach-library\obj\Debug\net9.0\kursach-library.csproj.CoreCompileInputs.cache
+C:\Users\nngfy\Documents\учёба\Мобилка\kursach4\kursach-library\obj\Debug\net9.0\kursach-library.dll
+C:\Users\nngfy\Documents\учёба\Мобилка\kursach4\kursach-library\obj\Debug\net9.0\refint\kursach-library.dll
+C:\Users\nngfy\Documents\учёба\Мобилка\kursach4\kursach-library\obj\Debug\net9.0\kursach-library.pdb
+C:\Users\nngfy\Documents\учёба\Мобилка\kursach4\kursach-library\obj\Debug\net9.0\kursach-library.genruntimeconfig.cache
+C:\Users\nngfy\Documents\учёба\Мобилка\kursach4\kursach-library\obj\Debug\net9.0\ref\kursach-library.dll

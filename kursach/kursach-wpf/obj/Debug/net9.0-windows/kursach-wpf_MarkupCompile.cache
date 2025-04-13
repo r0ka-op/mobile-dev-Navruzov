@@ -4,17 +4,17 @@
 winexe
 C#
 .cs
-C:\Users\nngfy\Documents\учёба\Мобилка\kursach\kursach-wpf\obj\Debug\net9.0-windows\
+C:\Users\nngfy\Documents\учёба\Мобилка\kursach4\kursach-wpf\obj\Debug\net9.0-windows\
 kursach_wpf
 none
 false
 TRACE;DEBUG;NET;NET9_0;NETCOREAPP
-C:\Users\nngfy\Documents\учёба\Мобилка\kursach\kursach-wpf\App.xaml
-4-267498782
+C:\Users\nngfy\Documents\учёба\Мобилка\kursach4\kursach-wpf\App.xaml
+51678883479
 
-7-757405438
-210-742529830
-LoginWindow.xaml;MainWindow.xaml;QuizWindow.xaml;RegisterWindow.xaml;
+8526529706
+21069450806
+CreateQuizWindow.xaml;LoginWindow.xaml;MainWindow.xaml;QuizWindow.xaml;RegisterWindow.xaml;
 
 False
 

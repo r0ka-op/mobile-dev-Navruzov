@@ -1562,11 +1562,11 @@
   "project": {
     "version": "1.0.0",
     "restore": {
-      "projectUniqueName": "C:\\Users\\nngfy\\Documents\\учёба\\Мобилка\\kursach\\kursach-wpf\\kursach-wpf.csproj",
+      "projectUniqueName": "C:\\Users\\nngfy\\Documents\\учёба\\Мобилка\\kursach4\\kursach-wpf\\kursach-wpf.csproj",
       "projectName": "kursach-wpf",
-      "projectPath": "C:\\Users\\nngfy\\Documents\\учёба\\Мобилка\\kursach\\kursach-wpf\\kursach-wpf.csproj",
+      "projectPath": "C:\\Users\\nngfy\\Documents\\учёба\\Мобилка\\kursach4\\kursach-wpf\\kursach-wpf.csproj",
       "packagesPath": "C:\\Users\\nngfy\\.nuget\\packages\\",
-      "outputPath": "C:\\Users\\nngfy\\Documents\\учёба\\Мобилка\\kursach\\kursach-wpf\\obj\\",
+      "outputPath": "C:\\Users\\nngfy\\Documents\\учёба\\Мобилка\\kursach4\\kursach-wpf\\obj\\",
       "projectStyle": "PackageReference",
       "fallbackFolders": [
         "C:\\Program Files (x86)\\Microsoft Visual Studio\\Shared\\NuGetPackages"
@@ -1588,8 +1588,8 @@
         "net9.0-windows7.0": {
           "targetAlias": "net9.0-windows",
           "projectReferences": {
-            "C:\\Users\\nngfy\\Documents\\учёба\\Мобилка\\kursach\\kursach-library\\kursach-library.csproj": {
-              "projectPath": "C:\\Users\\nngfy\\Documents\\учёба\\Мобилка\\kursach\\kursach-library\\kursach-library.csproj"
+            "C:\\Users\\nngfy\\Documents\\учёба\\Мобилка\\kursach4\\kursach-library\\kursach-library.csproj": {
+              "projectPath": "C:\\Users\\nngfy\\Documents\\учёба\\Мобилка\\kursach4\\kursach-library\\kursach-library.csproj"
             }
           }
         }

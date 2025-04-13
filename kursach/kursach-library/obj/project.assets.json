@@ -1542,11 +1542,11 @@
   "project": {
     "version": "1.0.0",
     "restore": {
-      "projectUniqueName": "C:\\Users\\nngfy\\Documents\\учёба\\Мобилка\\kursach\\kursach-library\\kursach-library.csproj",
+      "projectUniqueName": "C:\\Users\\nngfy\\Documents\\учёба\\Мобилка\\kursach4\\kursach-library\\kursach-library.csproj",
       "projectName": "kursach-library",
-      "projectPath": "C:\\Users\\nngfy\\Documents\\учёба\\Мобилка\\kursach\\kursach-library\\kursach-library.csproj",
+      "projectPath": "C:\\Users\\nngfy\\Documents\\учёба\\Мобилка\\kursach4\\kursach-library\\kursach-library.csproj",
       "packagesPath": "C:\\Users\\nngfy\\.nuget\\packages\\",
-      "outputPath": "C:\\Users\\nngfy\\Documents\\учёба\\Мобилка\\kursach\\kursach-library\\obj\\",
+      "outputPath": "C:\\Users\\nngfy\\Documents\\учёба\\Мобилка\\kursach4\\kursach-library\\obj\\",
       "projectStyle": "PackageReference",
       "fallbackFolders": [
         "C:\\Program Files (x86)\\Microsoft Visual Studio\\Shared\\NuGetPackages"

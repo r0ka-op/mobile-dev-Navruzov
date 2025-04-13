@@ -1,0 +1,25 @@
+﻿<Window x:Class="kursach_wpf.CreateQuizWindow"
+        xmlns="http://schemas.microsoft.com/winfx/2006/xaml/presentation"
+        xmlns:x="http://schemas.microsoft.com/winfx/2006/xaml"
+        Title="Создать викторину" Height="400" Width="500" WindowStartupLocation="CenterScreen">
+    <ScrollViewer VerticalScrollBarVisibility="Auto">
+        <StackPanel Margin="20" VerticalAlignment="Top">
+            <TextBlock Text="Название викторины:" Margin="0,0,0,5"/>
+            <TextBox x:Name="QuizTitleTextBox" Margin="0,0,0,15"/>
+
+            <TextBlock Text="Вопрос:" Margin="0,0,0,5"/>
+            <TextBox x:Name="QuestionTextBox" Margin="0,0,0,15"/>
+
+            <TextBlock Text="Ответы:"/>
+            <TextBox x:Name="Answer1TextBox" Margin="0,5,0,5" Text="Ответ 1"/>
+            <TextBox x:Name="Answer2TextBox" Margin="0,5,0,5" Text="Ответ 2"/>
+            <TextBox x:Name="Answer3TextBox" Margin="0,5,0,5" Text="Ответ 3"/>
+            <TextBox x:Name="Answer4TextBox" Margin="0,5,0,15" Text="Ответ 4"/>
+
+            <TextBlock Text="Правильный ответ (1-4):" />
+            <TextBox x:Name="CorrectAnswerTextBox" Margin="0,5,0,20" Width="50"/>
+
+            <Button Content="Создать" Width="100" HorizontalAlignment="Center" Click="CreateButton_Click"/>
+        </StackPanel>
+    </ScrollViewer>
+</Window>

@@ -1,12 +1,12 @@
 ﻿<Window x:Class="kursach_wpf.MainWindow"
         xmlns="http://schemas.microsoft.com/winfx/2006/xaml/presentation"
         xmlns:x="http://schemas.microsoft.com/winfx/2006/xaml"
-        Title="Quiz App" Height="450" Width="800" WindowStartupLocation="CenterScreen">
+        Title="Quiz App" Height="600" Width="900" WindowStartupLocation="CenterScreen">
     <Window.Resources>
         <Style TargetType="Button">
             <Setter Property="FontSize" Value="20" />
-            <Setter Property="Width" Value="200" />
-            <Setter Property="Height" Value="100" />
+            <Setter Property="MinWidth" Value="150" />
+            <Setter Property="MinHeight" Value="80" />
             <Setter Property="Margin" Value="10" />
             <Setter Property="Background" Value="#d19a66" />
             <Setter Property="Foreground" Value="White" />
@@ -27,13 +27,33 @@
     </Window.Resources>
 
     <Grid Background="#290460">
-        <TextBlock Text="Select a Quiz" FontSize="36" Foreground="White" VerticalAlignment="Top" Margin="20" />
+        <Grid.RowDefinitions>
+            <RowDefinition Height="Auto"/>
+            <!-- Заголовок -->
+            <RowDefinition Height="Auto"/>
+            <!-- Кнопка создания -->
+            <RowDefinition/>
+            <!-- Контент -->
+        </Grid.RowDefinitions>
 
-        <UniformGrid x:Name="QuizGrid" Columns="2" HorizontalAlignment="Center" VerticalAlignment="Center" Margin="50">
-            <Button Content="Quiz 1" Foreground="Black" Click="QuizButton_Click" Tag="1" />
-            <Button Content="Quiz 2" Foreground="Black" Click="QuizButton_Click" Tag="2" />
-            <Button Content="Quiz 3" Foreground="Black" Click="QuizButton_Click" Tag="3" />
-            <Button Content="Quiz 4" Foreground="Black" Click="QuizButton_Click" Tag="4" />
-        </UniformGrid>
+        <!-- Заголовок -->
+        <TextBlock Text="Выберите викторину" FontSize="36" Foreground="White"
+                   Margin="20" HorizontalAlignment="Center" Grid.Row="0"/>
+
+        <!-- Кнопка создания викторины -->
+        <StackPanel Orientation="Horizontal" HorizontalAlignment="Right" Margin="0,10,20,10" Grid.Row="1">
+            <Button Content="Создать викторину" Click="CreateQuiz_Click" Width="300" Height="40" FontSize="18" />
+        </StackPanel>
+
+        <!-- Контейнер для кнопок викторин -->
+        <ScrollViewer VerticalScrollBarVisibility="Auto" Margin="20" Grid.Row="2">
+            <ItemsControl x:Name="QuizItemsControl">
+                <ItemsControl.ItemsPanel>
+                    <ItemsPanelTemplate>
+                        <WrapPanel HorizontalAlignment="Center" />
+                    </ItemsPanelTemplate>
+                </ItemsControl.ItemsPanel>
+            </ItemsControl>
+        </ScrollViewer>
     </Grid>
 </Window>

@@ -13,7 +13,7 @@ namespace kursach_wpf
         {
             InitializeComponent();
             _userId = userId;
-            UpdateButtonStatus();
+            RefreshQuizButtons();
         }
 
         private void QuizButton_Click(object sender, RoutedEventArgs e)
@@ -42,9 +42,9 @@ namespace kursach_wpf
 
         private void UpdateButtonStatus()
         {
-            foreach (var child in QuizGrid.Children)
+            foreach (var item in QuizItemsControl.Items)
             {
-                if (child is Button button)
+                if (item is Button button)
                 {
                     var quizId = int.Parse(button.Tag.ToString());
                     var result = DatabaseHelper.GetQuizResult(_userId, quizId);
@@ -59,5 +59,45 @@ namespace kursach_wpf
                 }
             }
         }
+
+
+        private void CreateQuiz_Click(object sender, RoutedEventArgs e)
+        {
+            var createWindow = new CreateQuizWindow();
+            createWindow.ShowDialog();
+
+            if (createWindow.IsQuizCreated)
+                RefreshQuizButtons();
+        }
+
+        private void RefreshQuizButtons()
+        {
+            QuizItemsControl.Items.Clear();
+            var quizzes = DatabaseHelper.GetQuizzes();
+
+            foreach (var quiz in quizzes)
+            {
+                var button = new Button
+                {
+                    Content = quiz.Title,
+                    Tag = quiz.Id,
+                    Margin = new Thickness(10),
+                    Padding = new Thickness(10),
+                    MinWidth = 150,
+                    MinHeight = 80,
+                    FontSize = 18,
+                    Foreground = Brushes.Black,
+                    Background = new SolidColorBrush(Color.FromRgb(209, 154, 102)),
+                    BorderBrush = Brushes.Transparent
+                };
+
+                button.Click += QuizButton_Click;
+                QuizItemsControl.Items.Add(button);
+            }
+
+            UpdateButtonStatus();
+        }
+
+
     }
 }

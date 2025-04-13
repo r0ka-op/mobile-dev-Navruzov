@@ -1,8 +1,8 @@
 {
   "version": 2,
-  "dgSpecHash": "o1IZpPvSUBs=",
+  "dgSpecHash": "sRiolmKnzSw=",
   "success": true,
-  "projectFilePath": "C:\\Users\\nngfy\\Documents\\учёба\\Мобилка\\kursach\\kursach-library\\kursach-library.csproj",
+  "projectFilePath": "C:\\Users\\nngfy\\Documents\\учёба\\Мобилка\\kursach4\\kursach-library\\kursach-library.csproj",
   "expectedPackageFiles": [
     "C:\\Users\\nngfy\\.nuget\\packages\\entityframework\\6.4.4\\entityframework.6.4.4.nupkg.sha512",
     "C:\\Users\\nngfy\\.nuget\\packages\\microsoft.csharp\\4.7.0\\microsoft.csharp.4.7.0.nupkg.sha512",
