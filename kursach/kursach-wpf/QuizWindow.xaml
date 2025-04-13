@@ -1,0 +1,24 @@
+﻿<Window x:Class="kursach_wpf.QuizWindow"
+        xmlns="http://schemas.microsoft.com/winfx/2006/xaml/presentation"
+        xmlns:x="http://schemas.microsoft.com/winfx/2006/xaml"
+        Title="Quiz" Height="450" Width="800" WindowStartupLocation="CenterScreen">
+    <Grid Background="#290460">
+        <TextBlock Name="QuestionText" FontSize="24" Foreground="White" HorizontalAlignment="Center" VerticalAlignment="Top" Margin="20" />
+        <Image Name="QuestionImage" HorizontalAlignment="Center" VerticalAlignment="Top" Margin="20" MaxHeight="200" MaxWidth="200" />
+        <UniformGrid Rows="2" Columns="2" Margin="20" VerticalAlignment="Center">
+            <Button Name="Answer1Button" Click="AnswerButton_Click" MinHeight="18">
+                <Image Name="Answer1Image" Stretch="Uniform" MaxHeight="100" />
+            </Button>
+            <Button Name="Answer2Button" Click="AnswerButton_Click" MinHeight="18">
+                <Image Name="Answer2Image" Stretch="Uniform" MaxHeight="100" />
+            </Button>
+            <Button Name="Answer3Button" Click="AnswerButton_Click" MinHeight="18">
+                <Image Name="Answer3Image" Stretch="Uniform" MaxHeight="100" />
+            </Button>
+            <Button Name="Answer4Button" Click="AnswerButton_Click" MinHeight="18">
+                <Image Name="Answer4Image" Stretch="Uniform" MaxHeight="100" />
+            </Button>
+        </UniformGrid>
+
+    </Grid>
+</Window>
