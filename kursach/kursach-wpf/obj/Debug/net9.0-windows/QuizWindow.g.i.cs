@@ -132,7 +132,7 @@ namespace kursach_wpf {
                 return;
             }
             _contentLoaded = true;
-            System.Uri resourceLocater = new System.Uri("/kursach-wpf;V1.0.0.0;component/quizwindow.xaml", System.UriKind.Relative);
+            System.Uri resourceLocater = new System.Uri("/kursach-wpf;component/quizwindow.xaml", System.UriKind.Relative);
             
             #line 1 "..\..\..\QuizWindow.xaml"
             System.Windows.Application.LoadComponent(this, resourceLocater);

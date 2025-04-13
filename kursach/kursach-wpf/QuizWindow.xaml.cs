@@ -43,9 +43,9 @@ namespace kursach_wpf
             var question = _questions[_currentQuestionIndex];
             QuestionText.Text = question.QuestionText;
 
-            if (!string.IsNullOrEmpty(question.ImagePath) && System.IO.File.Exists(question.ImagePath))
+            if (question.Image != null)
             {
-                QuestionImage.Source = new BitmapImage(new Uri(question.ImagePath, UriKind.Absolute));
+                QuestionImage.Source = ByteArrayToImage(question.Image);
                 QuestionImage.Visibility = Visibility.Visible;
             }
             else
@@ -53,24 +53,25 @@ namespace kursach_wpf
                 QuestionImage.Visibility = Visibility.Collapsed;
             }
 
-            SetButtonContent(Answer1Button, Answer1Image, question.Answers[0], question.AnswerImagePaths[0], 0);
-            SetButtonContent(Answer2Button, Answer2Image, question.Answers[1], question.AnswerImagePaths[1], 1);
-            SetButtonContent(Answer3Button, Answer3Image, question.Answers[2], question.AnswerImagePaths[2], 2);
-            SetButtonContent(Answer4Button, Answer4Image, question.Answers[3], question.AnswerImagePaths[3], 3);
+            SetButtonContent(Answer1Button, Answer1Image, question.Answers[0], question.AnswerImages[0], 0);
+            SetButtonContent(Answer2Button, Answer2Image, question.Answers[1], question.AnswerImages[1], 1);
+            SetButtonContent(Answer3Button, Answer3Image, question.Answers[2], question.AnswerImages[2], 2);
+            SetButtonContent(Answer4Button, Answer4Image, question.Answers[3], question.AnswerImages[3], 3);
         }
 
-        private void SetButtonContent(Button button, Image image, string answerText, string imagePath, int answerIndex)
+
+        private void SetButtonContent(Button button, Image image, string answerText, byte[] imageBytes, int answerIndex)
         {
-            if (!string.IsNullOrEmpty(imagePath) && System.IO.File.Exists(imagePath))
+            if (imageBytes != null)
             {
-                image.Source = new BitmapImage(new Uri(imagePath, UriKind.Absolute));
+                image.Source = ByteArrayToImage(imageBytes);
                 image.Visibility = Visibility.Visible;
-                button.Content = image; 
+                button.Content = image;
             }
             else if (!string.IsNullOrEmpty(answerText))
             {
                 image.Visibility = Visibility.Collapsed;
-                button.Content = answerText; 
+                button.Content = answerText;
             }
             else
             {
@@ -79,6 +80,18 @@ namespace kursach_wpf
             }
 
             button.Tag = answerIndex;
+        }
+
+        private BitmapImage ByteArrayToImage(byte[] bytes)
+        {
+            using var ms = new System.IO.MemoryStream(bytes);
+            var image = new BitmapImage();
+            image.BeginInit();
+            image.CacheOption = BitmapCacheOption.OnLoad;
+            image.StreamSource = ms;
+            image.EndInit();
+            image.Freeze(); // Чтобы можно было использовать в другом потоке
+            return image;
         }
 
 

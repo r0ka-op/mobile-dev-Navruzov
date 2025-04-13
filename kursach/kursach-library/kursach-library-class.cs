@@ -23,12 +23,12 @@ namespace KursachLibrary
     /// Класс, представляющий вопрос в викторине
     public class Question
     {
-        public int Id { get; set; }                                  // Уникальный идентификатор вопроса
-        public string QuestionText { get; set; }                     // Текст вопроса
-        public string ImagePath { get; set; }                        // Путь к изображению для вопроса
-        public List<string> Answers { get; set; } = new List<string>();            // Список текстовых вариантов ответов
-        public List<string> AnswerImagePaths { get; set; } = new List<string>();   // Список путей к изображениям для вариантов ответов
-        public int CorrectAnswer { get; set; }                       // Индекс правильного ответа
+        public int Id { get; set; }
+        public string QuestionText { get; set; }             // Текст вопроса
+        public byte[] Image { get; set; }                    // Изображение вопроса в виде байтов
+        public List<string> Answers { get; set; } = new();   // Текстовые ответы
+        public List<byte[]> AnswerImages { get; set; } = new(); // Картинки ответов в виде байтов
+        public int CorrectAnswer { get; set; }               // Индекс правильного ответа (0–3)
     }
 
     /// Статический класс для работы с базой данных
@@ -36,6 +36,15 @@ namespace KursachLibrary
     {
         // Путь к файлу базы данных SQLite
         private const string DatabasePath = "C:\\Users\\nngfy\\Documents\\учёба\\Мобилка\\kursach4\\database.db";
+        private const string V = "SELECT COUNT(*) FROM Quizzes;";
+
+        private static byte[] LoadImageBytes(string path)
+        {
+            return System.IO.File.Exists(path)
+                ? System.IO.File.ReadAllBytes(path)
+                : null;
+        }
+
 
         /// Инициализирует базу данных и создает необходимые таблицы, если они не существуют
         public static void InitializeDatabase()
@@ -50,16 +59,16 @@ namespace KursachLibrary
             CREATE TABLE IF NOT EXISTS Questions (
                 Id INTEGER PRIMARY KEY, 
                 QuizId INTEGER, 
-                QuestionText TEXT, 
-                ImagePath TEXT, 
+                QuestionText TEXT,
+                Image BLOB,
                 Answer1 TEXT, 
                 Answer2 TEXT, 
                 Answer3 TEXT, 
                 Answer4 TEXT, 
-                AnswerImage1 TEXT, 
-                AnswerImage2 TEXT, 
-                AnswerImage3 TEXT, 
-                AnswerImage4 TEXT, 
+                AnswerImage1 BLOB,
+                AnswerImage2 BLOB,
+                AnswerImage3 BLOB,
+                AnswerImage4 BLOB, 
                 CorrectAnswer INTEGER
             );";
             var createResultsTable = @"
@@ -86,19 +95,49 @@ namespace KursachLibrary
             var count = Convert.ToInt32(command.ExecuteScalar());
             if (count == 0)
             {
-                // Добавление тестовых вопросов
-                command.CommandText = @"
-                INSERT INTO Questions (QuizId, QuestionText, ImagePath, Answer1, Answer2, Answer3, Answer4, AnswerImage1, AnswerImage2, AnswerImage3, AnswerImage4, CorrectAnswer)
-                VALUES
-                (1, '2 + 2?', NULL, '1', '2', '4', '3', NULL, NULL, NULL, NULL, 2),
-                (2, 'What is the capital of Great Britan?', NULL, 'Berlin', 'Madrid', 'Paris', 'London', NULL, NULL, NULL, NULL, 3),
-                (3, NULL, 'C:\Users\nngfy\Documents\учёба\Мобилка\kursach\\ezhik.jpg', 'Ёжик', 'Пицца', 'Треугольник', 'koshka', NULL, NULL, NULL, NULL, 0),
-                (4, 'Who is the China?', NULL, NULL, NULL, NULL, NULL, 'C:\Users\nngfy\Documents\учёба\Мобилка\kursach\\ezhik.jpg', 'C:\Users\nngfy\Documents\учёба\Мобилка\kursach\\russia.jpg', 'C:\Users\nngfy\Documents\учёба\Мобилка\kursach\\china.jpg', 'C:\Users\nngfy\Documents\учёба\Мобилка\kursach\\sever-korea.jpg', 2);";
-                command.ExecuteNonQuery();
+                var demoQuestions = new List<Question>
+                {
+                    new Question
+                    {
+                        QuestionText = "2 + 2?",
+                        Answers = new List<string> { "1", "2", "4", "3" },
+                        CorrectAnswer = 2
+                    },
+                    new Question
+                    {
+                        QuestionText = "What is the capital of Great Britain?",
+                        Answers = new List<string> { "Berlin", "Madrid", "Paris", "London" },
+                        CorrectAnswer = 3
+                    },
+                    new Question
+                    {
+                        Image = LoadImageBytes(@"C:\Users\nngfy\Documents\учёба\Мобилка\kursach\ezhik.jpg"),
+                        Answers = new List<string> { "Ёжик", "Пицца", "Треугольник", "koshka" },
+                        CorrectAnswer = 0
+                    },
+                    new Question
+                    {
+                        QuestionText = "Who is the China?",
+                        Answers = new List<string> { null, null, null, null },
+                        AnswerImages = new List<byte[]>
+                        {
+                            LoadImageBytes(@"C:\Users\nngfy\Documents\учёба\Мобилка\kursach\ezhik.jpg"),
+                            LoadImageBytes(@"C:\Users\nngfy\Documents\учёба\Мобилка\kursach\russia.jpg"),
+                            LoadImageBytes(@"C:\Users\nngfy\Documents\учёба\Мобилка\kursach\china.jpg"),
+                            LoadImageBytes(@"C:\Users\nngfy\Documents\учёба\Мобилка\kursach\sever-korea.jpg"),
+                        },
+                        CorrectAnswer = 2
+                    }
+                };
+
+                for (int i = 0; i < demoQuestions.Count; i++)
+                {
+                    AddQuestion(demoQuestions[i], quizId: i + 1);
+                }
             }
 
             // Проверка наличия викторин
-            command.CommandText = "SELECT COUNT(*) FROM Quizzes;";
+            command.CommandText = V;
             int quizCount = Convert.ToInt32(command.ExecuteScalar());
 
             if (quizCount == 0)
@@ -119,11 +158,13 @@ namespace KursachLibrary
             using var connection = new SQLiteConnection($"Data Source={DatabasePath}");
             connection.Open();
 
-            // SQL запрос для получения вопросов по ID викторины
             var selectQuery = @"
-            SELECT Id, QuestionText, ImagePath, Answer1, Answer2, Answer3, Answer4, 
-                   AnswerImage1, AnswerImage2, AnswerImage3, AnswerImage4, CorrectAnswer 
-            FROM Questions WHERE QuizId = @QuizId;";
+                SELECT Id, QuestionText, Image,
+                       Answer1, Answer2, Answer3, Answer4,
+                       AnswerImage1, AnswerImage2, AnswerImage3, AnswerImage4,
+                       CorrectAnswer
+                FROM Questions WHERE QuizId = @QuizId;";
+
             using var command = new SQLiteCommand(selectQuery, connection);
             command.Parameters.AddWithValue("@QuizId", quizId);
             using var reader = command.ExecuteReader();
@@ -131,26 +172,25 @@ namespace KursachLibrary
             var questions = new List<Question>();
             while (reader.Read())
             {
-                // Создание объекта вопроса на основе данных из БД
                 var question = new Question
                 {
                     Id = reader.GetInt32(0),
                     QuestionText = reader.IsDBNull(1) ? null : reader.GetString(1),
-                    ImagePath = reader.IsDBNull(2) ? null : reader.GetString(2),
+                    Image = reader.IsDBNull(2) ? null : (byte[])reader["Image"],
                     Answers = new List<string>
-                    {
-                        reader.IsDBNull(3) ? null : reader.GetString(3),
-                        reader.IsDBNull(4) ? null : reader.GetString(4),
-                        reader.IsDBNull(5) ? null : reader.GetString(5),
-                        reader.IsDBNull(6) ? null : reader.GetString(6)
-                    },
-                    AnswerImagePaths = new List<string>
-                    {
-                        reader.IsDBNull(7) ? null : reader.GetString(7),
-                        reader.IsDBNull(8) ? null : reader.GetString(8),
-                        reader.IsDBNull(9) ? null : reader.GetString(9),
-                        reader.IsDBNull(10) ? null : reader.GetString(10)
-                    },
+            {
+                reader.IsDBNull(3) ? null : reader.GetString(3),
+                reader.IsDBNull(4) ? null : reader.GetString(4),
+                reader.IsDBNull(5) ? null : reader.GetString(5),
+                reader.IsDBNull(6) ? null : reader.GetString(6)
+            },
+                    AnswerImages = new List<byte[]>
+            {
+                reader.IsDBNull(7) ? null : (byte[])reader["AnswerImage1"],
+                reader.IsDBNull(8) ? null : (byte[])reader["AnswerImage2"],
+                reader.IsDBNull(9) ? null : (byte[])reader["AnswerImage3"],
+                reader.IsDBNull(10) ? null : (byte[])reader["AnswerImage4"]
+            },
                     CorrectAnswer = reader.GetInt32(11)
                 };
 
@@ -159,6 +199,7 @@ namespace KursachLibrary
 
             return questions;
         }
+
 
         /// Сохраняет результат ответа пользователя на вопрос викторины
         public static void SaveResult(int userId, int quizId, int questionId, bool isCorrect)
@@ -288,36 +329,44 @@ namespace KursachLibrary
 
         public static void AddQuestion(Question question, int quizId)
         {
+            // Убедимся, что в списках ровно 4 элемента
+            for (int i = question.Answers.Count; i < 4; i++)
+                question.Answers.Add(null);
+
+            for (int i = question.AnswerImages.Count; i < 4; i++)
+                question.AnswerImages.Add(null);
+
             using var connection = new SQLiteConnection($"Data Source={DatabasePath}");
             connection.Open();
 
             var insertQuery = @"
-                INSERT INTO Questions (
-                    QuizId, QuestionText, ImagePath,
-                    Answer1, Answer2, Answer3, Answer4,
-                    AnswerImage1, AnswerImage2, AnswerImage3, AnswerImage4,
-                    CorrectAnswer
-                ) VALUES (
-                    @QuizId, @QuestionText, @ImagePath,
-                    @Answer1, @Answer2, @Answer3, @Answer4,
-                    @AnswerImage1, @AnswerImage2, @AnswerImage3, @AnswerImage4,
-                    @CorrectAnswer
-                );";
+            INSERT INTO Questions (
+                QuizId, QuestionText, Image,
+                Answer1, Answer2, Answer3, Answer4,
+                AnswerImage1, AnswerImage2, AnswerImage3, AnswerImage4,
+                CorrectAnswer
+            ) VALUES (
+                @QuizId, @QuestionText, @Image,
+                @Answer1, @Answer2, @Answer3, @Answer4,
+                @AnswerImage1, @AnswerImage2, @AnswerImage3, @AnswerImage4,
+                @CorrectAnswer
+            );";
 
             using var command = new SQLiteCommand(insertQuery, connection);
             command.Parameters.AddWithValue("@QuizId", quizId);
-            command.Parameters.AddWithValue("@QuestionText", question.QuestionText);
-            command.Parameters.AddWithValue("@ImagePath", question.ImagePath ?? (object)DBNull.Value);
+            command.Parameters.AddWithValue("@QuestionText", question.QuestionText ?? (object)DBNull.Value);
+            command.Parameters.AddWithValue("@Image", question.Image ?? (object)DBNull.Value);
 
             for (int i = 0; i < 4; i++)
             {
                 command.Parameters.AddWithValue($"@Answer{i + 1}", question.Answers[i] ?? (object)DBNull.Value);
-                command.Parameters.AddWithValue($"@AnswerImage{i + 1}", question.AnswerImagePaths[i] ?? (object)DBNull.Value);
+                command.Parameters.AddWithValue($"@AnswerImage{i + 1}", question.AnswerImages[i] ?? (object)DBNull.Value);
             }
 
             command.Parameters.AddWithValue("@CorrectAnswer", question.CorrectAnswer);
             command.ExecuteNonQuery();
         }
+
 
 
     }
