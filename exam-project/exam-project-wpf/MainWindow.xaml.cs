@@ -63,8 +63,8 @@ namespace exam_project_wpf
         {
             GameField.Children.Clear();
             int size = (int)gameLogic.CurrentDifficulty;
-            GameField.Columns = size;
-            GameField.Rows = size;
+            GameField.Columns = gameLogic.GameField.GetLength(1);
+            GameField.Rows = gameLogic.GameField.GetLength(0);
 
             for (int i = 0; i < size; i++)
             {
@@ -145,6 +145,7 @@ namespace exam_project_wpf
 
         private void NewGame_Click(object sender, RoutedEventArgs e)
         {
+            gameTimer.Stop();
             gameLogic.ResetGame();
             UpdateGameField();
             StartGame();

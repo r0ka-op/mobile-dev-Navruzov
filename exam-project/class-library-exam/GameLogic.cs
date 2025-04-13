@@ -70,43 +70,31 @@ namespace class_library_exam
             {
                 for (int j = 0; j < size; j++)
                 {
-                    if (random.Next(5) == 0)
-                    {
-                        GameField[i, j] = new GameFigure(FigureType.Empty, mainColor);
-                    }
-                    else
-                    {
-                        GameField[i, j] = new GameFigure(mainType, mainColor);
-                    }
+                    GameField[i, j] = new GameFigure(mainType, mainColor);
                 }
             }
         }
 
+
         private void AddUniqueFigure()
         {
             int size = GameField.GetLength(0);
-            List<(int, int)> emptyCells = new List<(int, int)>();
+            List<(int, int)> candidateCells = new List<(int, int)>();
 
+            // Сначала ищем пустые ячейки
             for (int i = 0; i < size; i++)
             {
                 for (int j = 0; j < size; j++)
                 {
                     if (GameField[i, j].Type == FigureType.Empty)
                     {
-                        emptyCells.Add((i, j));
+                        candidateCells.Add((i, j));
                     }
                 }
             }
 
-            if (emptyCells.Count > 0)
-            {
-                var (row, col) = emptyCells[random.Next(emptyCells.Count)];
-                FigureType uniqueType = random.Next(2) == 0 ? FigureType.Circle : FigureType.Triangle;
-                FigureColor uniqueColor = random.Next(2) == 0 ? FigureColor.Blue : FigureColor.Green;
-
-                GameField[row, col] = new GameFigure(uniqueType, uniqueColor, true);
-            }
-            else
+            // Если пустых ячеек нет — используем обычные
+            if (candidateCells.Count == 0)
             {
                 for (int i = 0; i < size; i++)
                 {
@@ -114,15 +102,25 @@ namespace class_library_exam
                     {
                         if (GameField[i, j].Type != FigureType.Empty)
                         {
-                            FigureType uniqueType = random.Next(2) == 0 ? FigureType.Circle : FigureType.Triangle;
-                            FigureColor uniqueColor = random.Next(2) == 0 ? FigureColor.Blue : FigureColor.Green;
-
-                            GameField[i, j] = new GameFigure(uniqueType, uniqueColor, true);
-                            return;
+                            candidateCells.Add((i, j));
                         }
                     }
                 }
             }
+
+            if (candidateCells.Count > 0)
+            {
+                var (row, col) = candidateCells[random.Next(candidateCells.Count)];
+
+                // Чтобы отличалась по цвету/форме
+                FigureType uniqueType = GameField[row, col].Type == FigureType.Circle ? FigureType.Triangle : FigureType.Circle;
+                FigureColor uniqueColor = GameField[row, col].Color == FigureColor.Blue ? FigureColor.Green : FigureColor.Blue;
+
+                GameField[row, col] = new GameFigure(uniqueType, uniqueColor, true);
+            }
         }
+
+
+
     }
 }
